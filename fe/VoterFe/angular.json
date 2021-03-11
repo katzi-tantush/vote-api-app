@@ -120,5 +120,8 @@
       }
     }
   },
-  "defaultProject": "VoterFe"
+  "defaultProject": "VoterFe",
+  "cli": {
+    "analytics": "ccab2549-4211-4582-8cb6-079a444ded06"
+  }
 }

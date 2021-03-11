@@ -1,0 +1,16 @@
+<form [formGroup]='loginForm' (ngSubmit)='attemptLogin()'>
+    <div>
+        <div>
+            User ID: <input formControlName='id'>
+        </div>
+        <div>
+            ID Issue Date: <input formControlName='idIssueDate'>
+        </div>
+        <button [disabled]='loginForm.invalid'>Login</button>
+    </div>
+</form>
+<div>
+    948367483
+    <br>
+    2012-04-23T18:25:43.511Z 
+</div>

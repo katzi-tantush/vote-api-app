@@ -14,20 +14,20 @@ namespace VoterBE.Model
         //: IDataModel, IVoter
     {
         [Key]
-        public int Id { get; set; }
         [Required]
+        public int Id { get; set; }
         [StringLength(20)]
         public string FName { get; set; }
         [StringLength(20)]
         public string LName { get; set; }
         public string Gender { get; set; }
         public int PhoneNum { get; set; }
-        [Required]
         [StringLength(50)]
+        [EmailAddress]
         public string Email { get; set; }
         [Column(TypeName = "date")]
-        public DateTime IdIssueDate { get; set; }
         [Required]
+        public DateTime IdIssueDate { get; set; }
         [StringLength(50)]
         public string City { get; set; }
         public string Role { get; set; }

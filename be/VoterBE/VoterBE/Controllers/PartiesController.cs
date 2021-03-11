@@ -19,6 +19,7 @@ namespace VoterBE.Controllers
 
         // GET: api/<PartyController>
         [HttpGet]
+        [Authorize(Roles = "Admin")]
         public IActionResult Get()
         {
             return Ok(VoterDb.Parties);
@@ -26,6 +27,7 @@ namespace VoterBE.Controllers
 
         //// GET api/<PartyController>/5
         [HttpGet("{id}")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Get(int id)
         {
             var party = await VoterDb.Parties.FindAsync(id);
@@ -38,7 +40,7 @@ namespace VoterBE.Controllers
 
         // PUT api/<PartyController>/5
         [HttpPut("vote")]
-        //[Authorize(Roles = "Voter")]
+        [Authorize(Roles = "Voter")]
         public async Task<IActionResult> Put([FromBody] Vote vote )
         {
             var voter = await VoterDb.Voters.FindAsync(vote.VoterId);

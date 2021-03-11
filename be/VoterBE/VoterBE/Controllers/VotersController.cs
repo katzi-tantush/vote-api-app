@@ -11,6 +11,8 @@ using System.IdentityModel.Tokens.Jwt;
 using Microsoft.IdentityModel.Tokens;
 using System.Security.Claims;
 using System.Text;
+using Microsoft.AspNetCore.Authorization;
+using VoterBE.Contracts;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -31,6 +33,7 @@ namespace VoterBE.Controllers
 
         // GET: api/<VoterController>
         [HttpGet]
+        [HttpGet("{id}")]
         public IActionResult Get()
         {
             return Ok(VoterDb.Voters);
@@ -39,6 +42,7 @@ namespace VoterBE.Controllers
         // GET api/<VoterController>/5
         // TODO: do i need this?
         [HttpGet("{id}")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Get(int id)
         {
             var voter = await VoterDb.Voters.FindAsync(id);
@@ -74,40 +78,26 @@ namespace VoterBE.Controllers
         }
 
         [HttpPost("login")]
-        public async Task<IActionResult> GetToken([FromBody] Voter requestingVoter)
+        public async Task<IActionResult> GetToken([FromBody] LoginRequest loginRequest)
         {
-            IActionResult response = Unauthorized();
-            var existingVoter = await VoterDb.Voters.FindAsync(requestingVoter.Id);
+            var existingVoter = await VoterDb.Voters.FindAsync(loginRequest.Id);
 
             if (existingVoter != null &&
-                requestingVoter.IdIssueDate == requestingVoter.IdIssueDate)
+                loginRequest.IdIssueDate == loginRequest.IdIssueDate)
             {
                 try
                 {
                     var token = Utils.GenTokenString(Config, existingVoter);
 
-                    response = Ok(new { responseToken = token, voter = requestingVoter });
+                    return Ok(new { responseToken = token, voter = existingVoter });
                 }
                 catch (Exception e)
                 {
-                    response = StatusCode(500, e);
+                    return StatusCode(500, e);
                 }
             }
-
-            return response;
+            return Unauthorized();
         }
 
-        // PUT api/<VoterController>/5
-        //[HttpPut("{id}")]
-        //public void Put(int id)
-        //{
-
-        //}
-
-        //// DELETE api/<VoterController>/5
-        //[HttpDelete("{id}")]
-        //public void Delete(int id)
-        //{
-        //}
     }
 }
