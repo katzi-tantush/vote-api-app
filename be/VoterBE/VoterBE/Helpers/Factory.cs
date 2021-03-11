@@ -34,13 +34,15 @@ namespace VoterBE.Helpers
 
         public static string GenTokenString(IConfiguration config, Voter authorizedVoter)
         {
-            var secretKey = 
-                new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config["jwtConfig.SecretKey"]));
+            SymmetricSecurityKey secretKey =
+                    new SymmetricSecurityKey(Encoding.UTF8.GetBytes(
+                    config["jwtConfig:SecretKey"])
+                    );
 
-            var tokenCredentials = 
+            SigningCredentials tokenCredentials =
                 new SigningCredentials(secretKey, SecurityAlgorithms.HmacSha256);
 
-            var tokenClaims = new Claim[]
+            Claim[] tokenClaims = new Claim[]
             {
                 new Claim(JwtRegisteredClaimNames.Sub, "clientClaims"),
                 new Claim(ClaimTypes.Name, $"{authorizedVoter.FName} {authorizedVoter.LName}"),
@@ -48,15 +50,15 @@ namespace VoterBE.Helpers
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
             };
 
-            var tokenValues = new JwtSecurityToken(
+            JwtSecurityToken tokenValues = new JwtSecurityToken(
                 issuer: config["jwtConfig:Issuer"],
                 audience: config["jwtConfig:Audience"],
                 claims: tokenClaims,
                 expires: DateTime.Now.AddMinutes(15),
                 signingCredentials: tokenCredentials
-                ) ;
+                );
 
-            var token = new JwtSecurityTokenHandler().WriteToken(tokenValues);
+            string token = new JwtSecurityTokenHandler().WriteToken(tokenValues);
 
             return token;
         }

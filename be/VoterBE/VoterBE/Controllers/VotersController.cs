@@ -9,6 +9,10 @@ using VoterBE.Contracts;
 using VoterBE.Extentions;
 using VoterBE.Helpers;
 using VoterBE.Model;
+using System.IdentityModel.Tokens.Jwt;
+using Microsoft.IdentityModel.Tokens;
+using System.Security.Claims;
+using System.Text;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -72,7 +76,7 @@ namespace VoterBE.Controllers
         }
 
         [HttpPost("login")]
-        public async Task<IActionResult> GetToken([FromBody] IVoter requestingVoter)
+        public async Task<IActionResult> GetToken([FromBody] Voter requestingVoter)
         {
             IActionResult response = Unauthorized();
             var existingVoter = await VoterDb.Voters.FindAsync(requestingVoter.Id);
@@ -83,8 +87,33 @@ namespace VoterBE.Controllers
                 try
                 {
                     var token = Factory.GenTokenString(Config, existingVoter);
+
+                    //    SymmetricSecurityKey secretKey =
+                    //new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Config["jwtConfig.SecretKey"]));
+
+                    //    SigningCredentials tokenCredentials =
+                    //        new SigningCredentials(secretKey, SecurityAlgorithms.HmacSha256);
+
+                    //    Claim[] tokenClaims = new Claim[]
+                    //    {
+                    //new Claim(JwtRegisteredClaimNames.Sub, "clientClaims"),
+                    //new Claim(ClaimTypes.Name, $"{requestingVoter.FName} {requestingVoter.LName}"),
+                    //new Claim(ClaimTypes.Role, requestingVoter.Role),
+                    //new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
+                    //    };
+
+                    //    JwtSecurityToken tokenValues = new JwtSecurityToken(
+                    //        issuer: Config["jwtConfig:Issuer"],
+                    //        audience: Config["jwtConfig:Audience"],
+                    //        claims: tokenClaims,
+                    //        expires: DateTime.Now.AddMinutes(15),
+                    //        signingCredentials: tokenCredentials
+                    //        );
+
+                    //    string token = new JwtSecurityTokenHandler().WriteToken(tokenValues);
+
                     // TODO: add an interface?
-                    response = Ok(new { responseToken = token, vote = requestingVoter });
+                    response = Ok(new { responseToken = token, voter = requestingVoter });
                 }
                 catch (Exception e)
                 {

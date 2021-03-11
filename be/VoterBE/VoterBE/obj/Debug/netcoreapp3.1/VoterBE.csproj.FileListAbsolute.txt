@@ -64,3 +64,4 @@ D:\learning to code\jhon bryce\jb talent\vote-app\be\VoterBE\VoterBE\bin\Debug\n
 D:\learning to code\jhon bryce\jb talent\vote-app\be\VoterBE\VoterBE\bin\Debug\netcoreapp3.1\runtimes\win-x86\native\Microsoft.Data.SqlClient.SNI.dll
 D:\learning to code\jhon bryce\jb talent\vote-app\be\VoterBE\VoterBE\bin\Debug\netcoreapp3.1\runtimes\win-x86\native\Microsoft.Data.SqlClient.SNI.pdb
 D:\learning to code\jhon bryce\jb talent\vote-app\be\VoterBE\VoterBE\bin\Debug\netcoreapp3.1\runtimes\win\lib\netstandard2.0\System.Runtime.Caching.dll
+D:\learning to code\jhon bryce\jb talent\vote-app\be\VoterBE\VoterBE\bin\Debug\netcoreapp3.1\Microsoft.AspNetCore.Authentication.JwtBearer.dll
