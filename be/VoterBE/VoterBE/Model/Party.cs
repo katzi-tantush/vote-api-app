@@ -3,14 +3,13 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
-using VoterBE.Contracts;
 using VoterBE.Helpers;
 
 #nullable disable
 
 namespace VoterBE.Model
 {
-    public partial class Party : IDataModel, IParty
+    public partial class Party : IDataModel
     {
         [Required]
         [StringLength(50)]

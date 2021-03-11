@@ -1,8 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using VoterBE.Contracts;
 using VoterBE.Model;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -35,19 +37,35 @@ namespace VoterBE.Controllers
         }
 
         // PUT api/<PartyController>/5
-        [HttpPut("vote/{id}")]
-        public async Task<IActionResult> Put(int id)
+        [HttpPut("vote")]
+        //[Authorize(Roles = "Voter")]
+        public async Task<IActionResult> Put([FromBody] Vote vote )
         {
-            //TODO: add logic that verifies that a user has voted once only!
-            var party = await VoterDb.Parties.FindAsync(id);
-            if (party == null)
+            var voter = await VoterDb.Voters.FindAsync(vote.VoterId);
+
+            if (voter == null)
             {
-                return NotFound();
+                return NotFound("A Voter with matching id could not be found");
+            }
+            if (voter.Voted == true)
+            {
+                return Unauthorized($"Voter {voter.Id} has already cast his/her ballot");
             }
 
+            var party = await VoterDb.Parties.FindAsync(vote.PartyId);
+            if (party == null)
+            {
+                return NotFound("A Party with matching id could not be found");
+            }
+            // add party vote count
             party.VoteCount += 1;
             VoterDb.Parties.Attach(party);
             VoterDb.Entry(party).Property(p => p.VoteCount).IsModified = true;
+
+            // change voter voted bool
+            voter.Voted = true;
+            VoterDb.Voters.Attach(voter);
+            VoterDb.Entry(voter).Property(v => v.Voted).IsModified = true;
 
             try
             {

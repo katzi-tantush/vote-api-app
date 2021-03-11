@@ -7,30 +7,12 @@ using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
-using VoterBE.Contracts;
 using VoterBE.Model;
 
 namespace VoterBE.Helpers
 {
-    public static class Factory
+    public static class Utils
     {
-        public static Voter GenVoter(IVoter voterValues)
-        {
-            var newVoter = new Voter()
-            {
-                FName = voterValues.FName,
-                LName = voterValues.LName,
-                Id = voterValues.Id,
-                Gender = voterValues.Gender,
-                PhoneNum = voterValues.PhoneNum,
-                Email = voterValues.Email,
-                IdIssueDate = voterValues.IdIssueDate,
-                City = voterValues.City,
-                Role = voterValues.Role
-            };
-
-            return newVoter;
-        }
 
         public static string GenTokenString(IConfiguration config, Voter authorizedVoter)
         {

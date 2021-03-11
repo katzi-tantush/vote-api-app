@@ -5,8 +5,6 @@ using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using VoterBE.Contracts;
-using VoterBE.Extentions;
 using VoterBE.Helpers;
 using VoterBE.Model;
 using System.IdentityModel.Tokens.Jwt;
@@ -86,40 +84,14 @@ namespace VoterBE.Controllers
             {
                 try
                 {
-                    var token = Factory.GenTokenString(Config, existingVoter);
+                    var token = Utils.GenTokenString(Config, existingVoter);
 
-                    //    SymmetricSecurityKey secretKey =
-                    //new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Config["jwtConfig.SecretKey"]));
-
-                    //    SigningCredentials tokenCredentials =
-                    //        new SigningCredentials(secretKey, SecurityAlgorithms.HmacSha256);
-
-                    //    Claim[] tokenClaims = new Claim[]
-                    //    {
-                    //new Claim(JwtRegisteredClaimNames.Sub, "clientClaims"),
-                    //new Claim(ClaimTypes.Name, $"{requestingVoter.FName} {requestingVoter.LName}"),
-                    //new Claim(ClaimTypes.Role, requestingVoter.Role),
-                    //new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
-                    //    };
-
-                    //    JwtSecurityToken tokenValues = new JwtSecurityToken(
-                    //        issuer: Config["jwtConfig:Issuer"],
-                    //        audience: Config["jwtConfig:Audience"],
-                    //        claims: tokenClaims,
-                    //        expires: DateTime.Now.AddMinutes(15),
-                    //        signingCredentials: tokenCredentials
-                    //        );
-
-                    //    string token = new JwtSecurityTokenHandler().WriteToken(tokenValues);
-
-                    // TODO: add an interface?
                     response = Ok(new { responseToken = token, voter = requestingVoter });
                 }
                 catch (Exception e)
                 {
                     response = StatusCode(500, e);
                 }
-                return response;
             }
 
             return response;
