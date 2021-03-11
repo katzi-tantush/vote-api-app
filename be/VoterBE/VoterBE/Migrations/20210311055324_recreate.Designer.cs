@@ -10,8 +10,8 @@ using VoterBE.Model;
 namespace VoterBE.Migrations
 {
     [DbContext(typeof(VoteContext))]
-    [Migration("20210310123615_idToPrimary_Voters_colomn")]
-    partial class idToPrimary_Voters_colomn
+    [Migration("20210311055324_recreate")]
+    partial class recreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -50,6 +50,11 @@ namespace VoterBE.Migrations
 
             modelBuilder.Entity("VoterBE.Model.Voter", b =>
                 {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
                     b.Property<string>("City")
                         .IsRequired()
                         .HasMaxLength(50)
@@ -68,10 +73,6 @@ namespace VoterBE.Migrations
                     b.Property<string>("Gender")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("Id")
-                        .HasColumnType("int")
-                        .HasColumnName("ID");
-
                     b.Property<DateTime>("IdIssueDate")
                         .HasColumnType("date");
 
@@ -87,6 +88,8 @@ namespace VoterBE.Migrations
 
                     b.Property<bool>("Voted")
                         .HasColumnType("bit");
+
+                    b.HasKey("Id");
 
                     b.ToTable("Voters");
                 });

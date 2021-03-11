@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using System;
+using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -53,7 +54,15 @@ namespace VoterBE.Controllers
             try
             {
                 await VoterDb.Voters.AddAsync(newVoter);
-                await VoterDb.SaveChangesAsync();
+
+                using (var connection = VoterDb.Database.GetDbConnection())
+                {
+                    await connection.OpenAsync();
+                    await VoterDb.Database.ExecuteSqlRawAsync($"SET IDENTITY_INSERT [dbo].[Voters] ON");
+                    await VoterDb.SaveChangesAsync();
+                    await VoterDb.Database.ExecuteSqlRawAsync($"SET IDENTITY_INSERT [dbo].[Voters] OFF");
+                }
+
                 return Ok(newVoter);
             }
             catch (Exception e)

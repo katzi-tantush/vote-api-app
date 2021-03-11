@@ -11,16 +11,16 @@ using VoterBE.Helpers;
 namespace VoterBE.Model
 {
     [Keyless]
-    public partial class Voter : IDataModel, IVoter
+    public partial class Voter
+        //: IDataModel, IVoter
     {
+        [Key]
+        public int Id { get; set; }
         [Required]
         [StringLength(20)]
         public string FName { get; set; }
         [StringLength(20)]
         public string LName { get; set; }
-        [Column("ID")]
-        [Key]
-        public int Id { get; set; }
         public string Gender { get; set; }
         public int PhoneNum { get; set; }
         [Required]

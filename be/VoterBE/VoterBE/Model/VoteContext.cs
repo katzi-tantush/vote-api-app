@@ -37,6 +37,11 @@ namespace VoterBE.Model
             {
                 entity.Property(e => e.Id).ValueGeneratedNever();
             });
+            
+            modelBuilder.Entity<Voter>(entity =>
+            {
+                entity.HasKey(e => e.Id);
+            });
 
             OnModelCreatingPartial(modelBuilder);
         }
