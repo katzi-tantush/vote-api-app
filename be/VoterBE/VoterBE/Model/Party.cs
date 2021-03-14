@@ -9,7 +9,7 @@ using VoterBE.Helpers;
 
 namespace VoterBE.Model
 {
-    public partial class Party : IDataModel
+    public partial class Party
     {
         [Required]
         [StringLength(50)]

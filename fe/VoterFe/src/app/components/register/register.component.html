@@ -1,0 +1,27 @@
+<form [formGroup]='registerForm' (ngSubmit)='register()'>
+    <div>
+        ID : <input formControlName='id'>
+    </div>
+    <div>
+        ID IssueDate: <input formControlName='idIssueDate'>
+    </div>
+    <div>
+        First Name: <input formControlName='fName'>
+    </div>
+    <div>
+        Last Name: <input formControlName='lName'>
+    </div>
+    <div>
+        Gender: <input formControlName='gender'>
+    </div>
+    <div>   
+        Phone Number: <input formControlName='phoneNum'>
+    </div>
+    <div>
+        Email: <input formControlName='email'>
+    </div>
+    <div>
+        City: <input formControlName='city'>
+    </div>
+    <button [disabled]='registerForm.invalid'>Register</button>
+</form>

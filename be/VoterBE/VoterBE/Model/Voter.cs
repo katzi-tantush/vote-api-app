@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
 using VoterBE.Helpers;
+using VoterBE.Validators;
 
 #nullable disable
 
@@ -15,6 +16,7 @@ namespace VoterBE.Model
     {
         [Key]
         [Required]
+        [IdValidator]
         public int Id { get; set; }
         [StringLength(20)]
         public string FName { get; set; }

@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using VoterBE.Contracts;
+using VoterBE.Helpers;
 using VoterBE.Model;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -19,10 +20,25 @@ namespace VoterBE.Controllers
 
         // GET: api/<PartyController>
         [HttpGet]
-        [Authorize(Roles = "Admin")]
+        //[Authorize(Roles = "Admin")]
         public IActionResult Get()
         {
             return Ok(VoterDb.Parties);
+        }
+
+        [HttpGet("voter-view")]
+        public IActionResult GetVoterView()
+        {
+            var parties = VoterDb.Parties;
+            try
+            {
+                var partyVoterViews = parties.Select(p => Mapper.PartyToVoterView(p));
+                return Ok(partyVoterViews);
+            }
+            catch (Exception e)
+            {
+                return StatusCode(500, e);
+            }
         }
 
         //// GET api/<PartyController>/5
@@ -40,8 +56,8 @@ namespace VoterBE.Controllers
 
         // PUT api/<PartyController>/5
         [HttpPut("vote")]
-        [Authorize(Roles = "Voter")]
-        public async Task<IActionResult> Put([FromBody] Vote vote )
+        //[Authorize(Roles = "Voter")]
+        public async Task<IActionResult> Put([FromBody] Vote vote)
         {
             var voter = await VoterDb.Voters.FindAsync(vote.VoterId);
 
@@ -72,7 +88,7 @@ namespace VoterBE.Controllers
             try
             {
                 await VoterDb.SaveChangesAsync();
-                return Ok(party);
+                return Ok(voter);
             }
             catch (Exception e)
             {

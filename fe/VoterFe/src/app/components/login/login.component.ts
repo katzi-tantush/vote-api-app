@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ILoginData } from 'src/app/models/ILoginData';
+import { ILoginVerification } from 'src/app/models/ILoginVerification';
 import { UserService } from 'src/app/services/user.service';
 
 @Component({
@@ -9,7 +9,7 @@ import { UserService } from 'src/app/services/user.service';
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent implements OnInit {
-  voterLoginData: ILoginData = {id:null, idIssueDate:null};
+  voterLoginData: ILoginVerification = {id:null, idIssueDate:null};
   loginForm: FormGroup;
   errMessage: string;
 
@@ -26,7 +26,7 @@ export class LoginComponent implements OnInit {
       })
   }
 
-  attemptLogin() {
+  login() {
     this.voterLoginData = this.loginForm.value;
     this.userService.login(this.voterLoginData);
   }

@@ -1,0 +1,5 @@
+<p>vote-cast works!</p>
+    <div *ngFor='let party of (parties$ | async)' (click)='selectParty(party)'>
+        <party-voter-display [party]='party' class="party-view"></party-voter-display>
+    </div>
+    <!-- {{parties | async | json}} -->

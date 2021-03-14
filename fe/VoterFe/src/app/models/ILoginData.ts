@@ -1,4 +1,6 @@
+import { IVoter } from "./IVoter";
+
 export interface ILoginData{
-    id: number;
-    idIssueDate: number;
+    voter: IVoter;
+    responseToken: string;
 }

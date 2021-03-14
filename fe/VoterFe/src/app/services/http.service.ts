@@ -14,7 +14,15 @@ export class HttpService {
     return this.http.get(`${this.baseUrl}/${endpoint}`);
   }
 
+  getById(endpoint:string, id:number):Observable<any> {
+    return this.http.get(`${this.baseUrl}/${endpoint}/${id}`);
+  }
+
   post(endpoint: string, body: any):Observable<any> {
     return this.http.post(`${this.baseUrl}/${endpoint}`, body);
+  }
+
+  put(endpoint: string, body:any): Observable<any>{
+    return this.http.put(`${this.baseUrl}/${endpoint}`, body);
   }
 }
