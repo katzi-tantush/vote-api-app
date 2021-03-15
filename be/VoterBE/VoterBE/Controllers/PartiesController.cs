@@ -56,7 +56,7 @@ namespace VoterBE.Controllers
 
         // PUT api/<PartyController>/5
         [HttpPut("vote")]
-        //[Authorize(Roles = "Voter")]
+        [Authorize(Roles = "Voter")]
         public async Task<IActionResult> Put([FromBody] Vote vote)
         {
             var voter = await VoterDb.Voters.FindAsync(vote.VoterId);

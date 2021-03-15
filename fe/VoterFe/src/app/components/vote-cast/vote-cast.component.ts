@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
+import { ILeaveBlockable } from 'src/app/component-interfaces/IleaveBlockable';
 import { IParty } from 'src/app/models/IParty';
 import { PartyService } from 'src/app/services/party.service';
 import { UserService } from 'src/app/services/user.service';
@@ -10,17 +11,27 @@ import { UserService } from 'src/app/services/user.service';
   templateUrl: './vote-cast.component.html',
   styleUrls: ['./vote-cast.component.css']
 })
-export class VoteCastComponent implements OnInit {
+export class VoteCastComponent implements OnInit, OnDestroy, ILeaveBlockable {
   parties$: Observable<IParty[]>;
+  private leave: boolean = false;
+  private voteSuccess: boolean;
 
   constructor(
     private partyService: PartyService,
     private userService: UserService,
-    private router: Router
   ) { }
+  
 
   ngOnInit(): void {
     this.parties$ = this.partyService.getVoterViewParties();
+    this.partyService.voteSuccess$.subscribe(voteCallSuccess=> this.voteSuccess = voteCallSuccess);
+  }
+
+  canLeave(): boolean {
+    if (!this.leave) {
+      this.leave = confirm('sure you wanna leave? You havent voted yet!!!');
+    }
+    return this.leave;
   }
 
   selectParty(party:IParty) {
@@ -28,9 +39,20 @@ export class VoteCastComponent implements OnInit {
     sure ? this.vote(party) : null;
   }
 
-  vote(party:IParty) {
+  vote(party: IParty) {
     this.partyService.vote(party);
-    this.userService.user$.value.voted = true;
-    this.router.navigate(['vote/vote-dont-cast']);
+    this.leave = this.voteSuccess;
+
+    if (this.voteSuccess) {
+      this.userService.user$.value.voted = true;
+      alert("Thanks for voting - You're done here")
+    }
+    else {
+      alert("something went wrong...")
+    }
+  }
+
+  ngOnDestroy(): void {
+    throw new Error('Method not implemented.');
   }
 }

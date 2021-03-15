@@ -5,15 +5,15 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { LoginComponent } from './components/login/login.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { RegisterComponent } from './components/register/register.component';
 import { TopNavComponent } from './components/top-nav/top-nav.component';
 import { LayoutComponent } from './components/layout/layout.component';
-import { VoteComponent } from './components/vote/vote.component';
 import { ErrorComponent } from './components/error/error.component';
 import { VoteCastComponent } from './components/vote-cast/vote-cast.component';
-import { VoteDontCastComponent } from './components/vote-dont-cast/vote-dont-cast.component';
 import { PartyVoterDisplayComponent } from './components/party-voter-display/party-voter-display.component';
+import { AuthenticationRejectComponent } from './components/authentication-reject/authentication-reject.component';
+import { AuthInterceptor } from './interceptors/AuthInterceptor';
 
 @NgModule({
   declarations: [
@@ -22,11 +22,10 @@ import { PartyVoterDisplayComponent } from './components/party-voter-display/par
     RegisterComponent,
     TopNavComponent,
     LayoutComponent,
-    VoteComponent,
     ErrorComponent,
     VoteCastComponent,
-    VoteDontCastComponent,
     PartyVoterDisplayComponent,
+    AuthenticationRejectComponent,
   ],
   imports: [
     BrowserModule,
@@ -35,7 +34,9 @@ import { PartyVoterDisplayComponent } from './components/party-voter-display/par
     ReactiveFormsModule,
     HttpClientModule
   ],
-  providers: [],
+  providers: [
+    {provide:HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true}
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

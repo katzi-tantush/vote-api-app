@@ -8,7 +8,6 @@ namespace VoterBE.Contracts
 {
     public class LoginRequest
     {
-        [IdValidator]
         public int Id { get; set; }
         public DateTime IdIssueDate { get; set; }
     }
